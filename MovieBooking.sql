@@ -234,3 +234,9 @@ select sh.ShowsID , avg(b.TotalSeatBooked) from Bookings b
 inner join Shows sh on b.ShowID = sh.ShowsID
 group by sh.ShowsID;
 
+--9. List users who have never booked any ticket.
+insert into Customer values
+(3,'Raj','Raj@gmail.com','9987875678','Cuddalore')
+
+select c.CustomerName from Customer c
+where c.CustomerID  not in (Select c.CustomerID from Bookings b);
