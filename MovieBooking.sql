@@ -189,7 +189,7 @@ inner join Movie m on sh.MovieID = m.MovieID
 inner join Screen sc on sh.ScreenID = sc.ScreenID
 inner join Theater t on t.TheaterID = sc.TheaterID;
 
---2. List customers who booked for a movie titled “Avengers: Endgame”.
+--2. List customers who booked for a movie titled “Leo”.
 select c.CustomerName from Bookings b
 inner join Customer c on b.CustomerID = c.CustomerID
 inner join Shows sh on b.ShowID = sh.ShowsID
@@ -204,3 +204,8 @@ inner join Theater t on sc.TheaterID = t.TheaterID
 group by m.MovieName
 having Count(*) > 2;
 
+--4. Write a query to find shows where total seats booked > 100.
+select s.ShowsID , SUM(b.TotalSeatBooked) as SeatsBooked from Bookings b
+inner join Shows s on  b.ShowID = s.ShowsID
+group by s.ShowsID 
+having sum(b.TotalSeatBooked) > 100;
