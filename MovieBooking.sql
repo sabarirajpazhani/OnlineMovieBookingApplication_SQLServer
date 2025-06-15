@@ -215,3 +215,11 @@ select sc.ScreenName from Bookings b
 inner join Shows sh on b.ShowID = sh.ShowsID
 inner join Screen sc on sh.ScreenID = sc.ScreenID
 where sc.TotalSeats > 120;
+
+--Aggregation & Grouping
+--6. Display the total number of bookings per movie.
+select m.MovieName , Count(*) as NumberOfBookings from Bookings b
+inner join Shows sh on b.ShowID = sh.ShowsID
+inner join Movie m on sh.MovieID = m.MovieID
+group by m.MovieName
+
