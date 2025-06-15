@@ -209,3 +209,9 @@ select s.ShowsID , SUM(b.TotalSeatBooked) as SeatsBooked from Bookings b
 inner join Shows s on  b.ShowID = s.ShowsID
 group by s.ShowsID 
 having sum(b.TotalSeatBooked) > 100;
+
+--5.  List bookings made on screens having more than 120 total seats.
+select sc.ScreenName from Bookings b
+inner join Shows sh on b.ShowID = sh.ShowsID
+inner join Screen sc on sh.ScreenID = sc.ScreenID
+where sc.TotalSeats > 120;
