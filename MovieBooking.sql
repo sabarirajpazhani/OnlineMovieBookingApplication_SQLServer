@@ -240,3 +240,14 @@ insert into Customer values
 
 select c.CustomerName from Customer c
 where c.CustomerID  not in (Select c.CustomerID from Bookings b);
+
+--10. Find the most booked movie overall.
+ select top 1 m.MovieName, Sum(b.TotalSeatBooked) as TotalSeats from Bookings b
+ inner join Shows sh on b.ShowID = sh.ShowsID
+ inner join Movie m on sh.MovieID = m.MovieID
+ group by m.MovieName
+ order by TotalSeats desc;
+
+
+
+
