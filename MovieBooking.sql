@@ -228,3 +228,9 @@ select m.MovieName , sum(b.TotalAmount) as Revenue from Bookings b
 inner join Shows sh on b.ShowID = sh.ShowsID
 inner join Movie m on sh.MovieID = m.MovieID
 group by m.MovieName;
+
+--8. Display the average number of seats booked per show.
+select sh.ShowsID , avg(b.TotalSeatBooked) from Bookings b
+inner join Shows sh on b.ShowID = sh.ShowsID
+group by sh.ShowsID;
+
