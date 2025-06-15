@@ -248,6 +248,10 @@ where c.CustomerID  not in (Select c.CustomerID from Bookings b);
  group by m.MovieName
  order by TotalSeats desc;
 
-
+ --11. Show the customer who made the highest total payment.
+ select top 1 c.CustomerName , Sum (b.TotalAmount) as Payment from Bookings b
+ inner join Customer c on b.CustomerID = c.CustomerID
+ group by c.CustomerName
+ order by Payment desc;
 
 
