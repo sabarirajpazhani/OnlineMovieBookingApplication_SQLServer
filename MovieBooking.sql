@@ -223,3 +223,8 @@ inner join Shows sh on b.ShowID = sh.ShowsID
 inner join Movie m on sh.MovieID = m.MovieID
 group by m.MovieName
 
+--7. Find the total revenue generated per movie.
+select m.MovieName , sum(b.TotalAmount) as Revenue from Bookings b
+inner join Shows sh on b.ShowID = sh.ShowsID
+inner join Movie m on sh.MovieID = m.MovieID
+group by m.MovieName;
