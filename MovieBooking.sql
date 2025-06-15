@@ -177,3 +177,22 @@ SELECT * FROM Bookings;
 SELECT * FROM BookedSeats;
 SELECT * FROM PaymentType;
 SELECT * FROM Payment;
+
+
+--Joins & Real-Time Queries
+--1. . Display CustomerName, MovieName, TheaterName, ShowTime, and TotalSeatBooked for all bookings.
+select c.CustomerName, m.MovieName, t.TheaterID, sh.ShowTime, b.TotalSeatBooked
+from Bookings b
+inner join Shows sh on b.ShowID = sh.ShowsID
+inner join Customer c on c.CustomerID = b.CustomerID
+inner join Movie m on sh.MovieID = m.MovieID
+inner join Screen sc on sh.ScreenID = sc.ScreenID
+inner join Theater t on t.TheaterID = sc.TheaterID;
+
+--2. List customers who booked for a movie titled “Avengers: Endgame”.
+select c.CustomerName from Bookings b
+inner join Customer c on b.CustomerID = c.CustomerID
+inner join Shows sh on b.ShowID = sh.ShowsID
+inner join Movie m on sh.MovieID = m.MovieID
+where m.MovieName = 'Leo';
+
