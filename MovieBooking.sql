@@ -196,3 +196,11 @@ inner join Shows sh on b.ShowID = sh.ShowsID
 inner join Movie m on sh.MovieID = m.MovieID
 where m.MovieName = 'Leo';
 
+--3. Show all movies that are playing in more than 2 different theatres.
+select m.MovieName from Movie m
+inner join Shows sh on m.MovieID = sh.MovieID
+inner join Screen sc on sh.ScreenID = sc.ScreenID
+inner join Theater t on sc.TheaterID = t.TheaterID
+group by m.MovieName
+having Count(*) > 2;
+
