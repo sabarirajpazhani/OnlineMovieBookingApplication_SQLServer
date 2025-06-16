@@ -333,3 +333,42 @@ begin
 end;
 
 exec sp_AllShows 1;
+
+--Triggers & Exception Logic
+--16.  Write a trigger to prevent booking if the requested number of seats exceeds the screen’s total capacity.
+alter trigger tr_PreventBooking
+on Bookings
+instead of insert
+as
+begin
+	if exists(
+		select 1 from inserted i
+		inner join Shows s on i.ShowID = s.ShowsID
+		inner join Screen sc on s.ScreenID = sc.ScreenID
+		where i.TotalSeatBooked > sc.TotalSeats
+	)
+	begin
+		raiserror('Cannot book more seats than screen capacity',16,1)
+		rollback
+		return
+	end
+	else
+	begin
+		insert into Bookings
+		select * from inserted
+
+		declare @BookedSeatID int 
+		declare @BookingID int, @SeatID int
+		select @BookingID = i.BookingID, @SeatID = s.SeatID from inserted i
+		inner join Shows sh on i.ShowID = sh.ShowsID
+		inner join Screen sc on sh.ScreenID = sc.ScreenID
+		inner join Seats s on sc.ScreenID = s.ScreenID
+
+		select @BookedSeatID = max(BookedSeatID)+1 from BookedSeats 
+		insert into BookedSeats values (@BookedSeatID , @BookingID, @SeatID)
+
+	end
+end
+
+insert into Bookings values
+(203, 3, 1,cast(getdate() as date),cast(getdate() as time),3, 390)
