@@ -267,3 +267,21 @@ as
 	inner join Theater t on sc.TheaterID = t.TheaterID
 
 select * from vw_ShowBookingDetails;
+
+-- Write a scalar function that accepts @MovieID and returns the total tickets booked for that movie.
+alter function GetTotalTicketsBooked(
+	@MovieID int
+)
+returns int
+as
+begin
+	declare @TotalTicketsBooked int
+	select @TotalTicketsBooked = sum(b.TotalSeatBooked) from Bookings b
+	inner join Shows sh on b.ShowID = sh.ShowsID
+	where sh.MovieID = @MovieID
+
+	return @TotalTicketsBooked
+end;
+
+select dbo.GetTotalTicketsBooked (1);
+
