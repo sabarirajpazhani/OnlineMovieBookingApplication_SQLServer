@@ -397,3 +397,9 @@ begin
 end;
 
 
+--UDDT, Index, Unique Rules
+--18. Create a user-defined data type PhoneType as VARCHAR(15) and use it in the Customers table.
+create type PhoneType from varchar(15)
+
+--19. Create a non-clustered index on MovieName in the Movies table, include LanguageID.
+create nonclustered index ix_MovieName on Movie (MovieName) include(LanguageID);
