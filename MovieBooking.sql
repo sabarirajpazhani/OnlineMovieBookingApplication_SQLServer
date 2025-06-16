@@ -163,6 +163,13 @@ INSERT INTO Payment VALUES
 (301, 1, 1, 201, 300),
 (302, 2, 2, 202, 250);
 
+create table PaymentStatus(
+	PaymentStatusID int identity(201,1) primary key,
+	PaymentID int,
+	Status varchar(50),
+	foreign key (PaymentID ) references Payment(PaymentID)
+);
+
 
 SELECT * FROM Theater;
 SELECT * FROM Screen;
@@ -177,7 +184,7 @@ SELECT * FROM Bookings;
 SELECT * FROM BookedSeats;
 SELECT * FROM PaymentType;
 SELECT * FROM Payment;
-
+SELECT * FROM PaymentStatus
 
 --Joins & Real-Time Queries
 --1. . Display CustomerName, MovieName, TheaterName, ShowTime, and TotalSeatBooked for all bookings.
@@ -372,3 +379,21 @@ end
 
 insert into Bookings values
 (203, 3, 1,cast(getdate() as date),cast(getdate() as time),3, 390)
+
+--17. Write a trigger that auto-updates payment status to 'Confirmed' when a payment is made.
+create trigger tr_PaymentStatus
+on PaymentStatus
+after insert
+as
+begin
+	begin try
+		declare @PaymentID int 
+		select @PaymentID = @PaymentID from inserted
+		insert into PaymentStatus values (@PaymentID, 'Success')
+	end try
+	begin catch
+		insert into PaymentStatus values (@PaymentID, 'Fail')
+	end catch
+end;
+
+
