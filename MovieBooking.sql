@@ -254,4 +254,16 @@ where c.CustomerID  not in (Select c.CustomerID from Bookings b);
  group by c.CustomerName
  order by Payment desc;
 
+ --Views, Functions, Procedures
+ --12. Create a view vw_ShowBookingDetails with:
+--BookingID, CustomerName, MovieName, TheatreName, ShowDate, ShowTime, TotalAmount.
+create view vw_ShowBookingDetails
+as
+	select b.BookingID, c.CustomerName, m.MovieName, t.TheaterName, sh.ShowDate, sh.ShowTime, b.TotalAmount from Bookings b
+	inner join Customer c on b.CustomerID = c.CustomerID
+	inner join Shows sh on b.ShowID = sh.ShowsID
+	inner join Movie m on sh.MovieID = m.MovieID
+	inner join Screen sc on sh.ScreenID = sc.ScreenID
+	inner join Theater t on sc.TheaterID = t.TheaterID
 
+select * from vw_ShowBookingDetails;
