@@ -403,3 +403,7 @@ create type PhoneType from varchar(15)
 
 --19. Create a non-clustered index on MovieName in the Movies table, include LanguageID.
 create nonclustered index ix_MovieName on Movie (MovieName) include(LanguageID);
+
+--Add a unique constraint to ensure a user cannot book the same seat in the same show more than once.
+alter table BookingSeats
+add Constraint uq_seatShow unique(SeatID, BookingID);
