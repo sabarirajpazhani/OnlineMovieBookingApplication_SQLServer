@@ -319,3 +319,17 @@ begin
 end
  
 exec sp_BookTickets  1, 1, 101, 2, 300; 
+
+--15. Write a procedure to return all shows for a theatre (@TheaterID) on today's date.
+alter procedure sp_AllShows
+	@TheaterID int
+as
+begin
+	select sh.ShowsID, m.MovieName, sh.ShowDate,sh.ShowTime from Shows sh
+	inner join Screen sc on sh.ScreenID = sc.ScreenID
+	inner join Movie m on sh.MovieID = m.MovieID
+	where sc.TheaterID = @TheaterID and sh.ShowDate = cast(getdate() as date)
+
+end;
+
+exec sp_AllShows 1;
