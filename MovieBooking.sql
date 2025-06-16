@@ -268,7 +268,7 @@ as
 
 select * from vw_ShowBookingDetails;
 
--- Write a scalar function that accepts @MovieID and returns the total tickets booked for that movie.
+-- 13. Write a scalar function that accepts @MovieID and returns the total tickets booked for that movie.
 alter function GetTotalTicketsBooked(
 	@MovieID int
 )
@@ -285,3 +285,37 @@ end;
 
 select dbo.GetTotalTicketsBooked (1);
 
+--14. Write a stored procedure sp_BookTickets to insert a new booking with: @CustomerID, @ShowID, @TotalSeatBooked, @TotalAmount
+alter procedure sp_BookTickets
+	@CustomerID int,
+	@ShowID int,
+	@SeatID int,
+	@TotalSeatBooked int,
+	@TotalAmount decimal(10,2)
+as
+begin
+	if exists (
+		select 1 from BookedSeats bs
+		inner join Bookings b on bs.BookingID = b.BookingID
+		where bs.SeatID = @SeatID and b.ShowID = @ShowID
+	)
+	begin 
+		print 'Already Seat booked'
+		return
+	end
+
+	declare @BookingID int 
+	select @BookingID = Max(BookingID)+1 from Bookings
+	insert into Bookings values
+	(@BookingID, @CustomerID, @ShowID, cast(getdate() as date),cast(getdate() as time), @TotalSeatBooked, @TotalAmount)
+
+	declare @BookedSeatID int
+	select @BookedSeatID = max(BookedSeatID) from BookedSeats
+
+	insert into BookedSeats values
+	(@BookedSeatID, @BookingID, @SeatID)
+
+	print 'Booked Successfully'
+end
+ 
+exec sp_BookTickets  1, 1, 101, 2, 300; 
